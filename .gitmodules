@@ -1,0 +1,3 @@
+[submodule "TMP-Text-Juicer"]
+	path = TMP-Text-Juicer
+	url = https://github.com/brunomikoski/TMP-Text-Juicer.git
