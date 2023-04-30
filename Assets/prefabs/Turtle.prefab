@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -694844212714249445}
   - component: {fileID: 5502576729293421897}
   m_Layer: 0
-  m_Name: Turtle
+  m_Name: turtle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,6 +57,8 @@ MonoBehaviour:
   _targetWaypoint: {x: 0, y: 0}
   _currentWaypointIndex: 0
   _spawnLocation: {fileID: 2095379678344774729, guid: 915732117c5812742b269c4f911f27aa, type: 3}
+  _health: {fileID: 0}
+  _duration: 0.1
 --- !u!114 &807957219681441528
 MonoBehaviour:
   m_ObjectHideFlags: 0

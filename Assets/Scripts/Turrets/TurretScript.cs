@@ -25,7 +25,7 @@ public class TurretScript : MonoBehaviour
     {
         TargetEnemy();
         if(_rotate) RotateTowardTarget();
-        if(_faceTarget) AdjustFacing();
+        if(_faceTarget && _target != null) AdjustFacing();
     }
 
     private void TargetEnemy()

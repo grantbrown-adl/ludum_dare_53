@@ -9,6 +9,7 @@ public class HealthBar : MonoBehaviour
     [SerializeField] float _maxHealth;
     [SerializeField] EnemyScript _enemyScript;
     [SerializeField] SimpleFlash _simpleFlash;
+    [SerializeField] float _goldValue;
 
     public float CurrentHealth { get => _currentHealth; private set => _currentHealth = value; }
 
@@ -21,10 +22,6 @@ public class HealthBar : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
-        {
-            ReceiveDamage(3.0f);
-        }
         _healthBar.SetStatusBarState(_currentHealth, _maxHealth);
     }
 
@@ -38,13 +35,18 @@ public class HealthBar : MonoBehaviour
             _currentHealth = 0;
             Die();
         }
-        else _simpleFlash.Flash();
+        else
+        {
+            _simpleFlash.Flash();
+            //_enemyScript.StopMovement(_enemyScript.Duration);
+        }
     }
 
     private void Die()
     {
         _currentHealth = _maxHealth;
         _enemyScript.ClearWaypoints();
+        ResourceManager.Instance.UpdateGold(_goldValue);
         ObjectPoolScript.ReturnInstance(this.gameObject);
     }
 }

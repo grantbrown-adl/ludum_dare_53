@@ -12,9 +12,11 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private int _currentWaypointIndex;
     [SerializeField] private GameObject _spawnLocation;
     [SerializeField] private HealthBar _health;
+    [SerializeField] private float _duration;
 
     public SpriteRenderer SpriteRenderer { get => _spriteRenderer; }
     public HealthBar Health { get => _health; set => _health = value; }
+    public float Duration { get => _duration; set => _duration = value; }
 
     private void Awake()
     {
@@ -77,4 +79,10 @@ public class EnemyScript : MonoBehaviour
         _targetWaypoint = _waypoint.Waypoints[_currentWaypointIndex];
     }
 
+    public IEnumerator StopMovement(float duration)
+    {
+        transform.position = Vector2.MoveTowards(transform.position, transform.position, _moveSpeed * Time.deltaTime);
+        yield return new WaitForSeconds(duration);
+        transform.position = Vector2.MoveTowards(transform.position, _targetWaypoint, _moveSpeed * Time.deltaTime);
+    }
 }
