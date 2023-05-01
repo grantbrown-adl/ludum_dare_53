@@ -239,7 +239,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.05
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -339,8 +339,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 56455dbb2992f464b9226e408a057a81, type: 3}
   _fire:
   - {fileID: 8300000, guid: 125d160c5de6a9d4c98c78268c4245a3, type: 3}
-  - {fileID: 8300000, guid: 4db0dfdcc0847834dbf25111ba7a0fa4, type: 3}
-  - {fileID: 8300000, guid: c2e3df6b6faa7064b95b31a6a8e43bbb, type: 3}
+  - {fileID: 8300000, guid: be5e687eeb11ce84e9e8e388502abdbb, type: 3}
   _bubble:
   - {fileID: 8300000, guid: ac23eb7cb5b081c479a597115130ee47, type: 3}
   - {fileID: 8300000, guid: 0e832dd59e05aa547aabed60d3da3de5, type: 3}
@@ -421,6 +420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 1
+  _pausePanel: {fileID: 0}
 --- !u!1001 &4469410187789161650
 PrefabInstance:
   m_ObjectHideFlags: 0

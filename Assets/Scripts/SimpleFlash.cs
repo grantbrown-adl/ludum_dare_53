@@ -63,6 +63,11 @@ public class SimpleFlash : MonoBehaviour
         flashRoutine = StartCoroutine(FlashRoutine());
     }
 
+    public void ResetMaterial()
+    {
+        spriteRenderer.material = originalMaterial;
+    }
+
     private IEnumerator FlashRoutine()
     {
         // Swap to the flashMaterial.

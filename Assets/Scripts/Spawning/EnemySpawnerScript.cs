@@ -56,6 +56,15 @@ public class EnemySpawnerScript : MonoBehaviour
         }            
     }
 
+    public bool CanSpawnAgain()
+    {
+        foreach(GameObject item in _objectPool.Pool)
+        {
+            if(item.activeInHierarchy) return false;
+        }
+        return true;
+    }
+
     private void SpawnObject()
     {
         _spawnedObjectCount++;
