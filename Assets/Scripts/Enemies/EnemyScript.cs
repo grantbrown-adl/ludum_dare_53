@@ -5,28 +5,53 @@ using UnityEngine;
 public class EnemyScript : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
+    [SerializeField] private HealthBar _health;
+    [SerializeField] float _goldValue;
+    [SerializeField] float _initialGoldValue;
+    [SerializeField] private float _initialMoveSpeed;
     [SerializeField] private WaypointScript _waypoint;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Vector2 _previousWaypointLocation;
     [SerializeField] private Vector2 _targetWaypoint;
     [SerializeField] private int _currentWaypointIndex;
     [SerializeField] private GameObject _spawnLocation;
-    [SerializeField] private HealthBar _health;
+    [SerializeField] private float _duration;
+    [SerializeField] PoolAfterTime _poolAfterTime;
+    [SerializeField] private bool _hasDecrementedLife;
+    [SerializeField] private bool _rightFacing;
 
     public SpriteRenderer SpriteRenderer { get => _spriteRenderer; }
     public HealthBar Health { get => _health; set => _health = value; }
+    public float Duration { get => _duration; set => _duration = value; }
+    public float GoldValue { get => _goldValue; set => _goldValue = value; }
 
     private void Awake()
     {
+        _hasDecrementedLife = false;
+        _poolAfterTime = GetComponent<PoolAfterTime>();        
         _currentWaypointIndex = 0;
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _targetWaypoint = _waypoint.Waypoints[_currentWaypointIndex];
         _health = GetComponent<HealthBar>();
     }
+    
+
+    private void OnEnable()
+    {
+        //_poolAfterTime.enabled = false;
+    }
+
+    public void CleanupObject()
+    {
+        _hasDecrementedLife = false;
+        ClearWaypoints();
+    }
 
     private void Start()
     {
         _previousWaypointLocation = transform.position;
+        _goldValue = _initialGoldValue * ScoreManager.Instance.CurrentGoldMod;
+        _moveSpeed = _initialMoveSpeed;
     }
 
     private void Update()
@@ -43,8 +68,16 @@ public class EnemyScript : MonoBehaviour
 
     private void AdjustFacing()
     {
-        if(_targetWaypoint.x > _previousWaypointLocation.x) _spriteRenderer.flipX = false;
-        else _spriteRenderer.flipX = true;
+        if(_rightFacing)
+        {
+            if(_targetWaypoint.x > _previousWaypointLocation.x) _spriteRenderer.flipX = false;
+            else _spriteRenderer.flipX = true;
+        } else
+        {
+            if(_targetWaypoint.x < _previousWaypointLocation.x) _spriteRenderer.flipX = false;
+            else _spriteRenderer.flipX = true;
+        }
+
     }
 
     private bool ReachedTargetWaypoint()
@@ -68,13 +101,30 @@ public class EnemyScript : MonoBehaviour
 
     private void LastWaypointReached()
     {
+        //_poolAfterTime.enabled = true;
+        if(!_hasDecrementedLife)
+        {
+            ResourceManager.Instance.UpdateHealth(-1);
+            int random = Random.Range(0, 100);
+            if(random > 80) SoundManager.Instance.PlayClip(SoundManager.Instance.PlayerDamage);
+            _hasDecrementedLife = true;
+            ObjectPoolScript.ReturnInstance(gameObject);
+            CleanupObject();
+        }
+            
     }
 
-    public void ClearWaypoints()
+    private void ClearWaypoints()
     {
         _currentWaypointIndex = 0;
         _previousWaypointLocation = _spawnLocation.transform.position;
         _targetWaypoint = _waypoint.Waypoints[_currentWaypointIndex];
     }
 
+    public IEnumerator StopMovement(float duration)
+    {
+        transform.position = Vector2.MoveTowards(transform.position, transform.position, _moveSpeed * Time.deltaTime);
+        yield return new WaitForSeconds(duration);
+        transform.position = Vector2.MoveTowards(transform.position, _targetWaypoint, _moveSpeed * Time.deltaTime);
+    }
 }
