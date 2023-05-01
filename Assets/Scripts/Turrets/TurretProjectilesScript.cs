@@ -82,7 +82,7 @@ public class TurretProjectilesScript : MonoBehaviour
         if(!SoundManager.Instance.AudioSource.isPlaying && random > 80)
         {
             if(instance.name == "claws(Clone)") SoundManager.Instance.PlayClip(SoundManager.Instance.Claws);
-            else if(random > 95) SoundManager.Instance.PlayClip(SoundManager.Instance.Fire);
+            else if(random > 90) SoundManager.Instance.PlayClip(SoundManager.Instance.Fire);
         }
         instance.transform.position = _spawnPosition.position;
         ProjectileScript projectile = instance.GetComponent<ProjectileScript>();

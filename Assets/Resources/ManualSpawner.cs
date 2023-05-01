@@ -33,7 +33,7 @@ public class ManualSpawner : MonoBehaviour
             else
             {
                 _timer = 15;
-                _waveButton.interactable = true;
+                if(EnemySpawnerScript.Instance.CanSpawnAgain()) _waveButton.interactable = true;
             }
         }
         else _waveButton.interactable = false;
@@ -86,5 +86,6 @@ public class ManualSpawner : MonoBehaviour
         ScoreManager.Instance.IncrementWave();
         EnemySpawnerScript.Instance.StartWave();
         _timer = 0;
+        EnemySpawnerScript.Instance.UpdateMaxSpawns(ScoreManager.Instance.CurrentSpawnMod - 1);
     }
 }

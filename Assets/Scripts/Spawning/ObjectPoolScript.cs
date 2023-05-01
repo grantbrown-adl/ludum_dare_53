@@ -11,15 +11,13 @@ public class ObjectPoolScript : MonoBehaviour
     private GameObject _poolParent;
 
     public GameObject SpawnableObject { get => _spawnableObject; set => _spawnableObject = value; }
+    public List<GameObject> Pool { get => _objectPool; set => _objectPool = value; }
 
     private void Start()
     {
         if(_poolSize <= 0) _poolSize = 1;
-        _objectPool = new();
-        _poolParent = new GameObject($"Object Pool - {_spawnableObject.name}");
-        if(_container == null) _container = new GameObject($"Object Pool - {_spawnableObject.name}");
-        _poolParent.transform.SetParent(_container.transform);
-        InitialiseObjectPool();
+        RefreshPool();
+        //InitialiseObjectPool();
     }
 
     void InitialiseObjectPool()
@@ -56,8 +54,22 @@ public class ObjectPoolScript : MonoBehaviour
 
     public void RefreshPool()
     {
-        _objectPool.Clear();
+        if(_container != null)
+        {
+            Destroy(_container);
+            _container = null;
+        }
         _poolSize = 1;
+        _objectPool = new();
+        _poolParent = new GameObject($"Object Pool - {_spawnableObject.name}");
+        if(_container == null) _container = new GameObject($"Object Pool - {_spawnableObject.name}");
+        _poolParent.transform.SetParent(_container.transform);
+        //_objectPool.RemoveRange(0, _poolSize - 1);
+        //_objectPool = new List<GameObject>();
+        //_objectPool = new();
+        //_objectPool.RemoveAll((_) => true);
+        //_objectPool.Clear();
+        
         InitialiseObjectPool();
     }
 

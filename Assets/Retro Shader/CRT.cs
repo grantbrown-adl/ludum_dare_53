@@ -21,6 +21,11 @@ public class CRT : MonoBehaviour {
         crtMat.hideFlags = HideFlags.HideAndDontSave;
     }
 
+    public void ToggleCRT()
+    {
+        useCRTShader = !useCRTShader;
+    }
+
     void OnRenderImage(RenderTexture source, RenderTexture destination) {
             crtMat.SetFloat("_Curvature", curvature);
             crtMat.SetFloat("_VignetteWidth", vignetteWidth);
