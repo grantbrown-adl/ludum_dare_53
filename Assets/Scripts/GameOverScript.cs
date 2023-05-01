@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameOverScript : MonoBehaviour
 {
-    private void OnEnable()
+    private void Awake()
     {
         //Pause the game
         PauseManager.Instance.IsPaused = true;

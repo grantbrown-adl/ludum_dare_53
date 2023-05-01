@@ -16,6 +16,26 @@ public class DamagePopup : MonoBehaviour
         return damagePopup;
     }
 
+    public static DamagePopup CreateFloat(Vector2 position, float damageAmount, bool isCritical, int directionX, string colour)
+    {
+        Transform damagePopupTransform = Instantiate(GameAssets.Instance.pfDamagePopup, position, Quaternion.identity);
+
+        DamagePopup damagePopup = damagePopupTransform.GetComponent<DamagePopup>();
+        damagePopup.Setup(damageAmount.ToString("n2"), isCritical, directionX, colour);
+
+        return damagePopup;
+    }
+
+    public static DamagePopup CreateText(Vector2 position, string text, bool isCritical, int directionX, string colour)
+    {
+        Transform damagePopupTransform = Instantiate(GameAssets.Instance.pfDamagePopup, position, Quaternion.identity);
+
+        DamagePopup damagePopup = damagePopupTransform.GetComponent<DamagePopup>();
+        damagePopup.Setup(text, isCritical, directionX, colour);
+
+        return damagePopup;
+    }
+
     [SerializeField] TextMeshPro textMesh;
     [SerializeField] float fadeTimer;
     [SerializeField] Color textColor;
@@ -33,7 +53,7 @@ public class DamagePopup : MonoBehaviour
     }
 
     private void Update()
-    {        
+    {
         transform.position += textMoveVector * Time.deltaTime;
         textMoveVector -= decreaseMoveVectorSpeed * Time.deltaTime * textMoveVector;
 
@@ -41,7 +61,8 @@ public class DamagePopup : MonoBehaviour
         {
             increaseScaleAmount = 1.0f;
             transform.localScale += Vector3.one * increaseScaleAmount * Time.deltaTime;
-        } else
+        }
+        else
         {
             decreaseScaleAmount = 1.0f;
             transform.localScale -= Vector3.one * decreaseScaleAmount * Time.deltaTime;
@@ -53,8 +74,7 @@ public class DamagePopup : MonoBehaviour
             textColor.a -= fadeSpeed * Time.deltaTime;
             textMesh.color = textColor;
             if(textColor.a <= 0) Destroy(this.gameObject);
-        }
-       
+        }    
     }
 
     public void Setup(string text, bool isCritical, int directionX, string colour)

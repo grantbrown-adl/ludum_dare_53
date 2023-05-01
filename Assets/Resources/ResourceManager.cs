@@ -23,6 +23,14 @@ public class ResourceManager : MonoBehaviour
         _currentHealth = _initialHealth;
     }
 
+    private void Update()
+    {
+        //if(Input.GetKeyDown(KeyCode.Backspace))
+        //{
+        //    UpdateGold(10);
+        //}
+    }
+
 
 
     public void UpdateGold(float value)

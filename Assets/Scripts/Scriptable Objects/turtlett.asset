@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e96881b40d4fca478cbb62545938f33, type: 3}
   m_Name: turtlett
   m_EditorClassIdentifier: 
+  _turretName: Turtlett
   _turret: {fileID: 6958449461678006647, guid: c31fecc3c2e90484dadc9bb3488b7411, type: 3}
   _turretCost: 10
   _turretSprite: {fileID: 391875700, guid: 75c8b563c05cec54689bcee9ae6838a3, type: 3}

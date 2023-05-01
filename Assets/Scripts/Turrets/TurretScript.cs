@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TurretScript : MonoBehaviour
 {
+    [SerializeField] private string _turretName;
     [SerializeField] private List<EnemyScript> _enemies;
     [SerializeField] private EnemyScript _target;
     [SerializeField] private float _rotationSpeed;
@@ -12,8 +13,11 @@ public class TurretScript : MonoBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private float _attackRange;
     [SerializeField] private CircleCollider2D _collider;
+    [SerializeField] private bool _rightFacing;
 
     public EnemyScript Target { get => _target; set => _target = value; }
+    public string TurretName { get => _turretName; set => _turretName = value; }
+
     private void Awake()
     {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -40,8 +44,17 @@ public class TurretScript : MonoBehaviour
 
     private void AdjustFacing()
     {
-        if(_target.transform.position.x > transform.position.x) _spriteRenderer.flipX = false;
-        else _spriteRenderer.flipX = true;
+        if(_rightFacing)
+        {
+            if(_target.transform.position.x > transform.position.x) _spriteRenderer.flipX = false;
+            else _spriteRenderer.flipX = true;
+        } else
+        {
+            if(_target.transform.position.x < transform.position.x) _spriteRenderer.flipX = false;
+            else _spriteRenderer.flipX = true;
+        }
+
+
     }
 
     private void RotateTowardTarget()

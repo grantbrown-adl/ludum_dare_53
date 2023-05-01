@@ -10,7 +10,9 @@ public class ObjectPoolScript : MonoBehaviour
     [SerializeField] private GameObject _container;
     private GameObject _poolParent;
 
-    private void Awake()
+    public GameObject SpawnableObject { get => _spawnableObject; set => _spawnableObject = value; }
+
+    private void Start()
     {
         if(_poolSize <= 0) _poolSize = 1;
         _objectPool = new();
@@ -50,7 +52,14 @@ public class ObjectPoolScript : MonoBehaviour
 
         ExpandPool();
         return GetInstance();
-    } 
+    }
+
+    public void RefreshPool()
+    {
+        _objectPool.Clear();
+        _poolSize = 1;
+        InitialiseObjectPool();
+    }
 
     public static void ReturnInstance(GameObject instance)
     {
