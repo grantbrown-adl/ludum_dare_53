@@ -61,7 +61,6 @@ public class ProjectileScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(_isHoming) return;
         EnemyScript enemy = collision.GetComponent<EnemyScript>();
         if(enemy)
         {

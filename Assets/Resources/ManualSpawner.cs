@@ -14,6 +14,11 @@ public class ManualSpawner : MonoBehaviour
     [SerializeField] private Button _enemyUpgradeButton;
     [SerializeField] private Button _waveUpgradeButton;
     [SerializeField] private float _timer;
+    [SerializeField] private bool _automaticWave;
+    [SerializeField] private Button _autoButton;
+    [SerializeField] private TextMeshProUGUI _timerText;
+    [SerializeField] private TextMeshProUGUI _autoEnabledText;
+    [SerializeField] private GameObject _cheatButton;
 
     public static ManualSpawner Instance { get => _instance; private set => _instance = value; }
 
@@ -21,22 +26,51 @@ public class ManualSpawner : MonoBehaviour
     {
         if(_instance != null && _instance != this) Destroy(this);
         else _instance = this;
-        _timer = 15;
+        _automaticWave = false;
+        _timer = 0;
     }
 
     private void Update()
     {
-        if(EnemySpawnerScript.Instance.MaxSpawnedObjects == EnemySpawnerScript.Instance.SpawnedObjectCount)
+        _cheatButton.SetActive(TimeManager.Instance.CheatsEnabled);   
+        if(_automaticWave)
         {
-            _timer += Time.deltaTime;
-            if(_timer < 15) _waveButton.interactable = false;
-            else
-            {
-                _timer = 15;
-                if(EnemySpawnerScript.Instance.CanSpawnAgain()) _waveButton.interactable = true;
-            }
+            if(EnemySpawnerScript.Instance.CanSpawnAgain()) _timerText.text = $"Next Wave: {  _timer.ToString("f0") }";
+            else _timerText.text = "In Progress";
+            _autoEnabledText.text = "On";
+            _autoEnabledText.color = Color.green;
+            _waveButton.interactable = false;
         }
-        else _waveButton.interactable = false;
+        else
+        {
+            _timerText.text = "";
+            _autoEnabledText.text = "Off";
+            _autoEnabledText.color = Color.red;
+        }
+
+        if(!_automaticWave)
+        {
+            if(EnemySpawnerScript.Instance.MaxSpawnedObjects == EnemySpawnerScript.Instance.SpawnedObjectCount)
+            {
+                _timer -= Time.deltaTime;
+                if(_timer >= 15) _waveButton.interactable = false;
+                else
+                {
+                    _timer = 0;
+                    if(EnemySpawnerScript.Instance.CanSpawnAgain()) _waveButton.interactable = true;
+                }
+            }
+            else _waveButton.interactable = false;
+        } else
+        {
+            if(EnemySpawnerScript.Instance.CanSpawnAgain())
+            {
+                _timer -= Time.deltaTime;
+                if(_timer <= 0) LaunchWave();
+            }
+
+        }
+
 
         if(ResourceManager.Instance.CurrentGold >= ScoreManager.Instance.CurrentWaveUpgradeCost) _waveUpgradeButton.interactable = true;
         else _waveUpgradeButton.interactable = false;
@@ -44,6 +78,8 @@ public class ManualSpawner : MonoBehaviour
         if(ResourceManager.Instance.CurrentGold >= ScoreManager.Instance.CurrentEnemyUpgradeCost) _enemyUpgradeButton.interactable = true;
         else _enemyUpgradeButton.interactable = false;
     }
+
+    public void GoldIncrease() => ScoreManager.Instance.CurrentGoldMod += 1;
 
     public void UpgradeWave()
     {
@@ -56,6 +92,8 @@ public class ManualSpawner : MonoBehaviour
             UpgradeWaveCost();
         }
     }
+
+    public void ToggleAutomaticWave() => _automaticWave = !_automaticWave;
 
     public void UpgradeEnemy()
     {
@@ -81,11 +119,12 @@ public class ManualSpawner : MonoBehaviour
 
     public void LaunchWave()
     {
+        if(_automaticWave) EnemySpawnerScript.Instance.ObjectPool.RefreshPool();
         int random = Random.Range(0, 100);
         if(random > 80) SoundManager.Instance.PlayClip(SoundManager.Instance.WaveStart);
         ScoreManager.Instance.IncrementWave();
         EnemySpawnerScript.Instance.StartWave();
-        _timer = 0;
+        _timer = 15;
         EnemySpawnerScript.Instance.UpdateMaxSpawns(ScoreManager.Instance.CurrentSpawnMod - 1);
     }
 }

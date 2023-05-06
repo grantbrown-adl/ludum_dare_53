@@ -56,7 +56,7 @@ public class TurretProjectilesScript : MonoBehaviour
     private void FireBubble(Vector2 direction)
     {
         int random = Random.Range(0, 100);
-        if(random > 95 && !SoundManager.Instance.AudioSource.isPlaying) SoundManager.Instance.PlayClip(SoundManager.Instance.Bubble);
+        if(random > 99 && !SoundManager.Instance.AudioSource.isPlaying) SoundManager.Instance.PlayClip(SoundManager.Instance.Bubble);
         GameObject instance = _objectPool.GetInstance();
         instance.transform.position = _spawnPosition.position;
         ProjectileScript projectile = instance.GetComponent<ProjectileScript>();

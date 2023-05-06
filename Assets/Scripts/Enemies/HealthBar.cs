@@ -11,8 +11,9 @@ public class HealthBar : MonoBehaviour
     [SerializeField] EnemyScript _enemyScript;
     [SerializeField] SimpleFlash _simpleFlash;
 
-    public float CurrentHealth { get => _currentHealth; private set => _currentHealth = value; }
+    public float CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
     public float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
+    public SimpleFlash SimpleFlash { get => _simpleFlash; set => _simpleFlash = value; }
 
     private void Awake()
     {

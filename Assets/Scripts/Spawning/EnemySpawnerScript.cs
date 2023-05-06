@@ -11,6 +11,7 @@ public class EnemySpawnerScript : MonoBehaviour
     public float SpawnDelay { get => _spawnDelay; set => _spawnDelay = value; }
     public float SpawnTime { get => _spawnTimer; set => _spawnTimer = value; }
     public int SpawnedObjectCount { get => _spawnedObjectCount; set => _spawnedObjectCount = value; }
+    public ObjectPoolScript ObjectPool { get => _objectPool; set => _objectPool = value; }
 
     [Header("Spawn Settings")]
     [SerializeField] private int _maxSpawnedObjects;
@@ -22,7 +23,7 @@ public class EnemySpawnerScript : MonoBehaviour
     [SerializeField] private float _spawnTimer;
     [SerializeField] private float _initialSpawnTimer;
     [SerializeField] private int _spawnedObjectCount;
-    private ObjectPoolScript _objectPool;
+    [SerializeField] private ObjectPoolScript _objectPool;
 
     private void Awake()
     {
@@ -69,6 +70,7 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         _spawnedObjectCount++;
         GameObject instance = _objectPool.GetInstance();
+        instance.GetComponent<EnemyScript>();
         instance.SetActive(true);
     }
 

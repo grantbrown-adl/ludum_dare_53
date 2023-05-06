@@ -44,6 +44,8 @@ public class EnemyScript : MonoBehaviour
     public void CleanupObject()
     {
         _hasDecrementedLife = false;
+        Health.CurrentHealth = Health.MaxHealth;
+        Health.SimpleFlash.ResetMaterial();
         ClearWaypoints();
     }
 
@@ -108,8 +110,8 @@ public class EnemyScript : MonoBehaviour
             int random = Random.Range(0, 100);
             if(random > 80) SoundManager.Instance.PlayClip(SoundManager.Instance.PlayerDamage);
             _hasDecrementedLife = true;
-            ObjectPoolScript.ReturnInstance(gameObject);
             CleanupObject();
+            ObjectPoolScript.ReturnInstance(gameObject);
         }
             
     }

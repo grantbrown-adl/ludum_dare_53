@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class GameOverScript : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
         //Pause the game
-        //PauseManager.Instance.IsPaused = true;
-        Time.timeScale = 0;
+        TimeManager.Instance.IsGameOver = true;
+        TimeManager.Instance.IsPaused = true;
+        //Time.timeScale = 0;
     }
 }
